@@ -20,6 +20,9 @@ struct Feature {
         return (x-rhs.x)*(x-rhs.x) + (y-rhs.y)*(y-rhs.y);
     }
 
+    Feature rotateFeature(const cv::Point2f& _center, const cv::Point2f& _base,
+                          float _angle, float _sin_angle, float _cos_angle, int angle_bin_number) const;
+
     int x;
     int y;
     float angle;

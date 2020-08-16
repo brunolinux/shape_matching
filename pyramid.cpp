@@ -23,6 +23,32 @@ Pyramid::Pyramid()
     clear();
 }
 
+Pyramid Pyramid::rotatePyramid(float _angle, int angle_bin_number) const
+{
+    float _sin_angle = sin(_angle * CV_PI / 180);
+    float _cos_angle = cos(_angle * CV_PI / 180);
+
+    Pyramid new_pyr;
+
+    
+    for (int l = 0; l < m_pattern.size(); l++) {
+        cv::Point2f _center = getPatternCenter(l);
+        cv::Point2f _base(m_pattern[l].base_x, m_pattern[l].base_y);
+
+        Pattern new_p;
+        for (const auto& f: m_pattern[l].m_features) {
+            new_p.m_features.push_back(f.rotateFeature(_center, _base, _angle, _sin_angle, _cos_angle, angle_bin_number));
+        }
+
+        new_p.pyramid_level = l;
+        new_pyr.push_back(new_p);
+    }
+    new_pyr.cropLocationRange();
+
+    return std::move(new_pyr);
+}
+
+
 void Pyramid::cropLocationRange()
 {
     int min_x = std::numeric_limits<int>::max();
@@ -58,12 +84,12 @@ void Pyramid::cropLocationRange()
         templ.base_x = min_x >> templ.pyramid_level;
         templ.base_y = min_y  >> templ.pyramid_level;
 
-        // @todo 这里确定要这样吗 ?
-//        for (int j = 0; j < (int)templ.m_features.size(); ++j)
-//        {
-//            templ.m_features[j].x -= templ.base_x;
-//            templ.m_features[j].y -= templ.base_y;
-//        }
+        // 相对基准点坐标
+        for (int j = 0; j < (int)templ.m_features.size(); ++j)
+        {
+            templ.m_features[j].x -= templ.base_x;
+            templ.m_features[j].y -= templ.base_y;
+        }
     }
 }
 

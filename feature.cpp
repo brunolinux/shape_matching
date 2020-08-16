@@ -2,10 +2,42 @@
 #include <iostream>
 #include "feature.h"
 
+
+
+Feature Feature::rotateFeature(const cv::Point2f& _center, const cv::Point2f& _base,
+                               float _angle, float _sin_angle, float _cos_angle, int angle_bin_number) const
+{
+    // feature 坐标是相对坐标 (在 pyramid 类的 cropLocationRange 实现)
+    cv::Point2f p = cv::Point2f(x, y) + _base - _center;
+
+    cv::Point2f rot_p;
+    
+    //  注意: x 轴水平朝右，y 轴竖直朝下
+    /*
+    [  cos_a, sin_a,
+      -sin_a, cos_a ]
+    */
+    rot_p.x = _cos_angle * p.x + _sin_angle * p.y + _center.x;
+    rot_p.y = -_sin_angle * p.x + _cos_angle * p.y + _center.y;
+
+    int new_x = static_cast<int>(rot_p.x + 0.5f);
+    int new_y = static_cast<int>(rot_p.y + 0.5f);
+
+    float new_angle = angle + _angle;
+    while (new_angle > 360) new_angle -= 360;
+    while (new_angle < 0) new_angle += 360;
+
+    int new_quantized_angle = static_cast<int>(new_angle * 2 * angle_bin_number / 360);
+    new_quantized_angle &= (angle_bin_number - 1);
+
+    Feature new_f(new_x, new_y, new_angle, new_quantized_angle);
+    return std::move(new_f);
+}
+
+
 FeatureCandidate::FeatureCandidate(int x, int y, float angle, uchar angle_quantized, float score)
 :m_feature(x, y, angle, angle_quantized), m_score(score)
 {}
-
 
 void createFeatures(const cv::Mat& src, const cv::Mat& mask,
                     std::vector<Feature>& features,

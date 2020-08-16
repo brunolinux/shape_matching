@@ -10,8 +10,8 @@ int main()
     cv::Mat_<uchar> src(6, 8);
     src << 0, 0, 0, 0, 0, 0, 0, 0,
            0, 0, 0, 0, 0, 0, 0, 0,
-           0, 0, 1, 1, 0, 0, 0, 0,
-           0, 0, 0, 3, 0, 0, 0, 0,
+           0, 0, 1, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 0, 0,
            0, 0, 0, 0, 0, 0, 0, 0,
            0, 0, 0, 0, 0, 0, 0, 0;
 
@@ -20,7 +20,7 @@ int main()
 
     cv::Mat result;
     {
-        spread(src, result, 3, 8);
+        spread(src, result, 4, 8);
         std::cout << "Bin Number 8: " << std::endl;
         std::cout << result << std::endl;
         std::cout << "matice type:" << result.type() << std::endl;
@@ -38,7 +38,7 @@ int main()
         std::cout << "Bin Number 32: " << std::endl;
         std::cout << result << std::endl;
         std::cout << "matice type:" << result.type() << std::endl;
-        std::cout << result.at<uint32_t>(1, 1) << std::endl;
+        std::cout << result.at<int>(1, 1) << std::endl;
     }
 
 

@@ -35,9 +35,12 @@ public:
     Pyramid();
 
     void cropLocationRange();
+
+    Pyramid rotatePyramid(float _angle, int angle_bin_number) const;
+
     void clear() { m_pattern.clear(); }
 
-    size_t size() {return m_pattern.size();}
+    size_t size() const {return m_pattern.size();}
 
     const Pattern& operator[](size_t index) const {
         return m_pattern.at(index);
@@ -49,6 +52,11 @@ public:
 
     void push_back(const Pattern& pattern) {
         m_pattern.push_back(pattern);
+    }
+
+    cv::Point2f getPatternCenter(size_t index) const {
+        return cv::Point2f(m_pattern[index].base_x + m_pattern[index].width / 2,
+                           m_pattern[index].base_y + m_pattern[index].height / 2);
     }
 private:
     std::vector<Pattern> m_pattern;

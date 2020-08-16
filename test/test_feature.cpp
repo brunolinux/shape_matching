@@ -1,8 +1,8 @@
 //
 // Created by bruno on 8/15/20.
 //
-#include "../feature.h"
-#include "../pyramid.h"
+
+#include "test_util.h"
 #include <opencv2/opencv.hpp>
 
 void test_feature(const cv::Mat& src)
@@ -12,10 +12,8 @@ void test_feature(const cv::Mat& src)
 
     //cv::Mat featureMat = cv::Mat::zeros(src.size(), CV_8U);
     cv::Mat src_draw = src.clone();
-    for (int i = 0; i < features.size(); i ++) {
-        cv::circle(src_draw, cv::Point(features[i].x, features[i].y), 4, 122, 2);
-        //src.at<uchar>() = 122;
-    }
+    draw_features(src_draw, features);
+
     cv::imshow("Feature location", src_draw);
     cv::waitKey(0);
 }
@@ -27,21 +25,12 @@ void test_pyramid(const cv::Mat& src)
     PyramidDetector detector(params);
     auto pyramid = detector.detect(src, cv::Mat());
 
+
     cv::Mat src_pyr = src.clone();
-    for (int i = 0; i < pyramid.size(); i ++) {
-        cv::Mat src_draw = src_pyr.clone();
-        auto pattern = pyramid[i];
-        for (int i = 0; i < pattern.m_features.size(); i ++) {
-            cv::circle(src_draw, cv::Point(pattern.m_features[i].x, pattern.m_features[i].y), 4, 122, 2);
-        }
-        cv::rectangle(src_draw, cv::Point(pattern.base_x, pattern.base_y),
-                      cv::Point(pattern.base_x + pattern.width, pattern.base_y + pattern.height), cv::Scalar(122));
+    auto src_draw_vec = draw_pyramid(src_pyr, pyramid);
 
-        cv::Mat tmp;
-        cv::resize(src_pyr, tmp,src_pyr.size()/2);
-        src_pyr = tmp;
-
-        cv::imshow("py" + std::to_string(i), src_draw);
+    for (int i = 0; i < src_draw_vec.size(); i ++) {
+        cv::imshow("py" + std::to_string(i), src_draw_vec[i]);
         cv::waitKey(0);
     }
 }

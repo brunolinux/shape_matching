@@ -12,6 +12,7 @@
 #include "response_map.h"
 #include "feature.h"
 
+
 LinearMemoryPyramid createLinearMemoryPyramid(const cv::Mat& src, const cv::Mat& mask,
                                               const std::vector<int>& T_at_level,
                                               float threshold,
@@ -43,7 +44,7 @@ LinearMemoryPyramid createLinearMemoryPyramid(const cv::Mat& src, const cv::Mat&
         }
 
         std::vector<cv::Mat> response_maps;
-        spread(quantized, spread_quantized, angle_bin_number, T);
+        spread(quantized, spread_quantized, T, angle_bin_number);
         computeResponseMaps(spread_quantized, response_maps);
 
         LinearMemories &memories = lm_pyramid[l];
@@ -158,17 +159,17 @@ void spread(const cv::Mat &src, cv::Mat &dst, int T, int angle_bin_number)
             }
         }
     } else if (angle_bin_number == 32) {
-        shiftedMap<uint32_t>(src, shifted_src);
-        dst = cv::Mat_<uint32_t>::zeros(src.size());
+        shiftedMap<int>(src, shifted_src);
+        dst = cv::Mat_<int>::zeros(src.size());
 
         const int src_step = static_cast<const int>(shifted_src.step1());
         const int dst_step = static_cast<const int>(dst.step1());
-        uint32_t *dst_ptr = dst.ptr<uint32_t>(T_half) + T_half;
+        int*dst_ptr = dst.ptr<int>(T_half) + T_half;
         for (int r = 0; r < T; ++r)
         {
             for (int c = 0; c < T; ++c)
             {
-                orUnaligned(&shifted_src.at<uint32_t>(r, c), src_step, dst_ptr, dst_step, src.cols - c, src.rows - r);
+                orUnaligned(&shifted_src.at<int>(r, c), src_step, dst_ptr, dst_step, src.cols - c, src.rows - r);
             }
         }
     } else {
@@ -337,4 +338,30 @@ void linearize(const cv::Mat &response_map, cv::Mat &linearized, int T)
             }
         }
     }
+}
+
+
+const uchar* accessLinearMemory(const std::vector<cv::Mat>& linear_memories,
+                                const Feature& f, int T, int Width_TTBlock)
+{
+    // Retrieve the TxT grid of linear memories associated with the feature label
+    const cv::Mat& memory_grid = linear_memories[f.angle_quantized];
+    CV_DbgAssert(memory_grid.rows == T * T);
+    CV_DbgAssert(f.x >= 0);
+    CV_DbgAssert(f.y >= 0);
+    // The LM we want is at (x%T, y%T) in the TxT grid (stored as the rows of memory_grid)
+    int grid_x = f.x % T;
+    int grid_y = f.y % T;
+    int grid_index = grid_y * T + grid_x;
+    CV_DbgAssert(grid_index >= 0);
+    CV_DbgAssert(grid_index < memory_grid.rows);
+    const unsigned char* memory = memory_grid.ptr(grid_index);
+    // Within the LM, the feature is at (x/T, y/T). W is the "width" of the LM, the
+    // input image width decimated by T.
+    int lm_x = f.x / T;
+    int lm_y = f.y / T;
+    int lm_index = lm_y * Width_TTBlock + lm_x;
+    CV_DbgAssert(lm_index >= 0);
+    CV_DbgAssert(lm_index < memory_grid.cols);
+    return memory + lm_index;
 }
