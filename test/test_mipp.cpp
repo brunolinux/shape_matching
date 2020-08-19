@@ -2,7 +2,7 @@
 // Created by bruno on 8/15/20.
 //
 
-#include "../mipp/mipp.h"
+#include "../src/mipp/mipp.h"
 
 int main()
 {

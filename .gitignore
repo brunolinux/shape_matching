@@ -1,3 +1,8 @@
 .idea
 cmake-build-debug
 build
+img/intermediate
+img/circle*.bmp
+self_test
+doc/测试数据.xlsx
+

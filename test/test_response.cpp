@@ -2,7 +2,7 @@
 // Created by bruno on 8/15/20.
 //
 
-#include "../response_map.h"
+#include "response_map.h"
 #include <iostream>
 
 int main() {

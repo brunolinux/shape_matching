@@ -1,7 +1,7 @@
 //
 // Created by bruno on 8/14/20.
 //
-#include "../pyramid.h"
+#include "pyramid.h"
 #include <iostream>
 
 int main()

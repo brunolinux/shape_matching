@@ -1,4 +1,4 @@
-#include "../response_map.h"
+#include "response_map.h"
 #include <iostream>
 
 int main()

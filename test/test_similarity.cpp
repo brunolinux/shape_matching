@@ -1,6 +1,6 @@
-#include "../similarity.h"
-#include "../pyramid.h"
-#include "../response_map.h"
+#include "similarity.h"
+#include "pyramid.h"
+#include "response_map.h"
 
 #include <opencv2/opencv.hpp>
 
@@ -27,5 +27,18 @@ int main()
 
 	
 	cv::Mat similarities;
-	//similarity(linearMemPyr[0], pyramid[0], similarities, test.size(), T_vec[0]);
+	similarity(linearMemPyr[0], pyramid[0], similarities, test.size(), T_vec[0]);
+
+    //Initialize m
+    double minVal;
+    double maxVal;
+    cv::Point minLoc;
+    cv::Point maxLoc;
+    minMaxLoc(similarities, &minVal, &maxVal, &minLoc, &maxLoc );
+
+    cv::Mat simShow;
+    similarities.convertTo(simShow, CV_8U, 255./maxVal);
+
+    cv::imshow("sim", simShow);
+    cv::waitKey(0);
 }

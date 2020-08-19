@@ -1,4 +1,4 @@
-#include "../matching.h"
+#include "matching.h"
 #include "test_util.h"
 #include <iostream>
 #include <opencv2/opencv.hpp>
@@ -93,17 +93,24 @@ void test_rotatePyr(const cv::Mat& src, float angle)
 	for (int i = 0; i < src_draw_vec0.size(); i++) {
 		std::string name = "old_py" + std::to_string(i);
 		cv::imshow(name, src_draw_vec0[i]);
-		cv::imwrite("img/" + name + ".png", src_draw_vec0[i]);
+		cv::imwrite("img/intermediate/" + name + ".png", src_draw_vec0[i]);
 	}
 	cv::waitKey(0);
 
 
 	// rotated pyramid
 	auto new_pyramid = pyramid.rotatePyramid(angle, params.angle_bin_number);
-	
+
+	// debug angle
+    for (int i = 0; i < pyramid.at(0).m_features.size(); i++) {
+        std::cout << "old: " << pyramid.at(0).m_features[i].angle;
+        std::cout << "\t new: " << new_pyramid.at(0).m_features[i].angle;
+        std::cout << std::endl;
+    }
+
 	cv::Mat src_rot;
 	cv::Point2f center = pyramid.getPatternCenter(0);
-	cv::Mat rot_mat = cv::getRotationMatrix2D(center, angle, 1.);
+	cv::Mat rot_mat = cv::getRotationMatrix2D(center, 360 - angle, 1.);
 	cv::warpAffine(src, src_rot, rot_mat, src.size());
 	
 	auto src_draw_vec = draw_pyramid(src_rot, new_pyramid);
@@ -111,8 +118,7 @@ void test_rotatePyr(const cv::Mat& src, float angle)
 	for (int i = 0; i < src_draw_vec.size(); i++) {
 		std::string name = "py" + std::to_string(i);
 		cv::imshow(name, src_draw_vec[i]);
-		cv::imwrite("img/" + name + ".png", src_draw_vec[i]);
-		
+		cv::imwrite("img/intermediate/" + name + ".png", src_draw_vec[i]);
 	}
 	cv::waitKey(0);
 }
@@ -131,6 +137,7 @@ int main()
 	cv::Rect roi(130, 110, 270, 270);
 
 	src = src(roi).clone();
-	test_rotatePyr(src, 45.f);
+	// angle 是顺时针角度
+	test_rotatePyr(src, 18.f);
 
 }

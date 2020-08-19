@@ -2,7 +2,7 @@
 // Created by bruno on 8/15/20.
 //
 
-#include "../response_map.h"
+#include "response_map.h"
 #include <iostream>
 
 int main()
@@ -12,7 +12,7 @@ int main()
            0, 0, 0, 0, 0, 0, 0, 0,
            0, 0, 1, 0, 0, 0, 0, 0,
            0, 0, 0, 0, 0, 0, 0, 0,
-           0, 0, 0, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 1, 0,
            0, 0, 0, 0, 0, 0, 0, 0;
 
     std::cout << "Input: " << std::endl;
@@ -20,7 +20,7 @@ int main()
 
     cv::Mat result;
     {
-        spread(src, result, 4, 8);
+        spread(src, result, 3, 8);
         std::cout << "Bin Number 8: " << std::endl;
         std::cout << result << std::endl;
         std::cout << "matice type:" << result.type() << std::endl;
@@ -41,6 +41,11 @@ int main()
         std::cout << result.at<int>(1, 1) << std::endl;
     }
 
-
+    {
+        spread(src, result, 4, 8);
+        std::cout << "Bin Number 8: " << std::endl;
+        std::cout << result << std::endl;
+        std::cout << "matice type:" << result.type() << std::endl;
+    }
     return 0;
 }
