@@ -26,7 +26,7 @@ struct MatchingParams
     float scale_end;
     float scale_step;
 
-    std::vector<int> T_vec;
+    std::vector<int> T_vec; /// vector of T
 };
 
 struct MatchingResult
@@ -69,8 +69,7 @@ public:
 
     void addClassPyramid(const cv::Mat& src, const cv::Mat& mask, const std::string& class_id);
 
-    Pyramid getClassPyramid(const std::string& class_id, int template_id,
-                            int scale_id, int angle_id);
+    Pyramid getClassPyramid(const MatchingResult& match);
 
     MatchingResultVec matchClass(const cv::Mat& src, const std::string& class_id,
                                            float threshold,
@@ -85,7 +84,7 @@ private:
                                      int scale_id, int angle_id,
                                      int template_id, const std::string& class_id);
 
-    // class id (string) --> template (images) vector (consider scale vector)
+    // class id (string) --> pyramid (images) vector (consider scale vector)
     std::map<std::string, std::vector<std::vector<Pyramid>>> m_classPyramids;
 
     MatchingParams m_params;

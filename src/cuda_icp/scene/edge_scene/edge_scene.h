@@ -35,13 +35,13 @@ struct Scene_edge{
         x = size_t(src_pcd.x + 0.5f);
         y = size_t(src_pcd.y + 0.5f);
 
-        if(x >= width || y >= height){
+        if (x >= width || y >= height) {
             valid = false;
             return;
         }
 
         size_t idx = x + y * width;
-        if(pcd_ptr[idx].x >= 0){
+        if (pcd_ptr[idx].x >= 0) {
 
             dst_pcd = pcd_ptr[idx];
 
@@ -49,7 +49,9 @@ struct Scene_edge{
 
             valid = true;
 
-        }else valid = false;
+        } else {
+            valid = false;
+        }
 
         return;
     }

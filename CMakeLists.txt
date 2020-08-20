@@ -12,8 +12,8 @@ find_package(OpenCV REQUIRED
              NO_DEFAULT_PATH
              )
 else()
-find_package(OpenCV 3.2.0 EXACT REQUIRED
-             PATHS "/home/bruno/program/source_code/libcv_debug/share"
+find_package(OpenCV 3.4.11 EXACT REQUIRED
+             PATHS "/home/bruno/program/source_code/libcv/share"
              NO_DEFAULT_PATH)
 endif()
 

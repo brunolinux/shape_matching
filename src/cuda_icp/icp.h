@@ -83,8 +83,10 @@ struct thrust__pcd2Ab
         Vec11f result;
         Vec2f dst_pcd, dst_normal; bool valid;
         __scene.query(src_pcd, dst_pcd, dst_normal, valid);
-        if(!valid) return result;
-        else{
+        if(!valid) {
+            return result;
+        }
+        else {
             result[10] = 1;  //valid count
             // dot
             float b_temp = (dst_pcd - src_pcd).x * dst_normal.x +

@@ -108,11 +108,10 @@ void Matching::addClassPyramid(const cv::Mat& src, const cv::Mat& mask, const st
     m_classPyramids[class_id].push_back(pyr_vec);
 }
 
-Pyramid Matching::getClassPyramid(const std::string& class_id, int template_id,
-                                  int scale_id, int angle_id)
+Pyramid Matching::getClassPyramid(const MatchingResult& match)
 {
-    const Pyramid &pyr = m_classPyramids[class_id][template_id][scale_id];
-    return std::move(pyr.rotatePyramid(m_angleVec[angle_id], m_detectorParams.angle_bin_number));
+    const Pyramid &pyr = m_classPyramids[match.class_id][match.template_id][match.scale_id];
+    return std::move(pyr.rotatePyramid(m_angleVec[match.angle_id], m_detectorParams.angle_bin_number));
 }
 
 

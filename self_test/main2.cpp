@@ -62,7 +62,7 @@ void test()
     scene.init_Scene_edge_cpu(img, pcd_buffer, normal_buffer);
 
     const MatchingResult& match = matches[0];
-    Pyramid matchedPyr = matching.getClassPyramid(match.class_id, match.template_id, match.scale_id, match.angle_id);
+    Pyramid matchedPyr = matching.getClassPyramid(match);
     const auto& patternLevel0 = matchedPyr[0];
     std::vector<::Vec2f> model_pcd(patternLevel0.m_features.size());
     for(int i=0; i<patternLevel0.m_features.size(); i++){
