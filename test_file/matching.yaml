@@ -1,0 +1,20 @@
+%YAML:1.0
+---
+matching_parameter:
+   angle:
+      start: 0.
+      end: 360.
+      step: 1.
+   scale:
+      start: 1.
+      end: 1.
+      step: 1.
+   T_vec:
+      - 4
+      - 8
+detector_parameter:
+   weak_threshold: 30.
+   strong_threshold: 60.
+   num_feature_toplevel: 100
+   pyramid_level: 2
+   angle_bin_number: 8

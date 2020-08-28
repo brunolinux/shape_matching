@@ -133,3 +133,81 @@ Pyramid PyramidDetector::detect(const cv::Mat &src, const cv::Mat &mask) const
     return pyramid;
 }
 
+
+/////////////////////////////////////////////////////
+// write/read
+////////////////////////////////////////////////////
+void Pyramid::write(cv::FileStorage &fs) const
+{
+    fs << "[";
+    for (int i = 0; i < m_pattern.size(); i ++) {
+        fs << m_pattern[i];
+    }
+    fs << "]";
+}
+
+
+void Pyramid::read(const cv::FileNode& fs)
+{
+    m_pattern.clear();
+
+    CV_Assert(fs.type() == cv::FileNode::SEQ);
+    cv::FileNodeIterator it = fs.begin(), it_end = fs.end();
+    for (; it != it_end; ++it) {
+        Pattern pattern;
+        (*it) >> pattern;
+        m_pattern.push_back(pattern);
+    }
+}
+
+
+void write(cv::FileStorage& fs, const std::string&, const Pyramid& pyr)
+{
+    pyr.write(fs);
+}
+
+void read(const cv::FileNode& node, Pyramid& pyr,
+          const Pyramid& default_value)
+{
+    if(node.empty())
+        pyr = default_value;
+    else
+        pyr.read(node);
+}
+
+void write(cv::FileStorage& fs, const std::string&, const Pattern& pattern)
+{
+    fs << "{"
+       << "pyr_level" << pattern.pyramid_level
+       << "base_x" << pattern.base_x
+       << "base_y" << pattern.base_y
+       << "width" << pattern.width
+       << "height" << pattern.height;
+
+    fs << "features" << "[";
+    for (int i = 0; i < pattern.m_features.size(); i ++) {
+        fs << pattern.m_features[i];
+    }
+    fs << "]" << "}";
+}
+
+
+void read(const cv::FileNode& node, Pattern& pattern, const Pattern& default_value)
+{
+    pattern.pyramid_level = (int)node["pyr_level"];
+    pattern.base_x = (int)node["base_x"];
+    pattern.base_y = (int)node["base_y"];
+    pattern.width = (int)node["width"];
+    pattern.height = (int)node["height"];
+
+    cv::FileNode features_node = node["features"];
+    CV_Assert(features_node.type() == cv::FileNode::SEQ);
+    cv::FileNodeIterator it = features_node.begin(), it_end = features_node.end();
+    std::vector<Feature> feature_vec;
+    for (; it != it_end; ++it) {
+        Feature feature;
+        (*it) >> feature;
+        feature_vec.push_back(feature);
+    }
+    pattern.m_features = std::move(feature_vec);
+}

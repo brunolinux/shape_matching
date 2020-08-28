@@ -11,6 +11,10 @@
 
 
 struct Feature {
+    Feature() {
+        x = 0; y = 0; angle_quantized = 0; angle = 0.f;
+    }
+
     Feature(int _x, int _y, float _angle, uchar _angle_quantized)
     :x(_x), y(_y), angle(_angle), angle_quantized(_angle_quantized)
     {}
@@ -28,6 +32,10 @@ struct Feature {
     float angle;
     uchar angle_quantized;  ///< range: 0 ~ bins_number-1 ( bins_number = 8, 16, 32)
 };
+
+// read/write feature
+void write(cv::FileStorage& fs, const std::string&, const Feature& feature);
+void read(const cv::FileNode& node, Feature& feature, const Feature& default_value = Feature());
 
 
 struct FeatureCandidate

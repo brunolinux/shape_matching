@@ -2,6 +2,21 @@
 #include <iostream>
 #include "feature.h"
 
+void write(cv::FileStorage& fs, const std::string&, const Feature& feature)
+{
+    fs << "{" << "x" << feature.x << "y" << feature.y
+       << "angle" << feature.angle
+       << "angle_quantized" << feature.angle_quantized << "}";
+}
+
+void read(const cv::FileNode& node, Feature& feature, const Feature& default_value)
+{
+    feature.x = (int)node["x"];
+    feature.y = (int)node["y"];
+    feature.angle = (float)node["angle"];
+    feature.angle_quantized = (int)node["angle_quantized"];
+}
+
 
 // 注意: angle 是顺时针角度
 Feature Feature::rotateFeature(const cv::Point2f& _center, const cv::Point2f& _base,

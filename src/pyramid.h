@@ -28,6 +28,24 @@ struct PyrDetectorParams {
     int num_feature_toplevel;
     int pyramid_level;
     int angle_bin_number;
+
+    void write(cv::FileStorage& fs) const {
+        fs << "{"
+           << "weak_threshold" << weak_threshold
+           << "strong_threshold" << strong_threshold
+           << "num_feature_toplevel" << num_feature_toplevel
+           << "pyramid_level" << pyramid_level
+           << "angle_bin_number" << angle_bin_number
+           << "}";
+    }
+
+    void read(const cv::FileNode& node) {
+        weak_threshold = (float)node["weak_threshold"];
+        strong_threshold = (float)node["strong_threshold"];
+        num_feature_toplevel = (int)node["num_feature_toplevel"];
+        pyramid_level = (int)node["pyramid_level"];
+        angle_bin_number = (int)node["angle_bin_number"];
+    }
 };
 
 class Pyramid {
@@ -58,10 +76,12 @@ public:
         return cv::Point2f(m_pattern[index].base_x + m_pattern[index].width / 2,
                            m_pattern[index].base_y + m_pattern[index].height / 2);
     }
+
+    void write(cv::FileStorage& fs) const;
+    void read(const cv::FileNode& fs);
 private:
     std::vector<Pattern> m_pattern;
 };
-
 
 class PyramidDetector {
 public:
@@ -74,6 +94,14 @@ public:
 private:
     PyrDetectorParams m_params;
 };
+
+// read/write pattern
+void write(cv::FileStorage& fs, const std::string&, const Pattern& pattern);
+void read(const cv::FileNode& node, Pattern& pattern, const Pattern& default_value = Pattern());
+
+// read/write pyramid
+void write(cv::FileStorage& fs, const std::string&, const Pyramid& pyr);
+void read(const cv::FileNode& node, Pyramid& pyr, const Pyramid& default_value = Pyramid());
 
 
 #endif //SHAPE_MATCHING_PYRAMID_H

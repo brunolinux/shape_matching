@@ -1,0 +1,789 @@
+%YAML:1.0
+---
+class_id: test
+class_vec:
+   -
+      template_id: 0
+      scale_pyramid_vec:
+         -
+            scale: 1.
+            pyramid:
+               -
+                  pyr_level: 0
+                  base_x: 102
+                  base_y: 100
+                  width: 267
+                  height: 269
+                  features:
+                     -
+                        x: 267
+                        y: 8
+                        angle: 1.8022552490234375e+02
+                        angle_quantized: 0
+                     -
+                        x: 176
+                        y: 269
+                        angle: 270.
+                        angle_quantized: 4
+                     -
+                        x: 195
+                        y: 269
+                        angle: 270.
+                        angle_quantized: 4
+                     -
+                        x: 214
+                        y: 269
+                        angle: 270.
+                        angle_quantized: 4
+                     -
+                        x: 233
+                        y: 269
+                        angle: 270.
+                        angle_quantized: 4
+                     -
+                        x: 252
+                        y: 269
+                        angle: 270.
+                        angle_quantized: 4
+                     -
+                        x: 234
+                        y: 82
+                        angle: 3.3456219482421875e+02
+                        angle_quantized: 7
+                     -
+                        x: 244
+                        y: 155
+                        angle: 1.1153027534484863e+01
+                        angle_quantized: 0
+                     -
+                        x: 30
+                        y: 196
+                        angle: 1.4821275329589844e+02
+                        angle_quantized: 7
+                     -
+                        x: 213
+                        y: 215
+                        angle: 4.1204849243164062e+01
+                        angle_quantized: 2
+                     -
+                        x: 148
+                        y: 20
+                        angle: 2.7687405395507812e+02
+                        angle_quantized: 4
+                     -
+                        x: 67
+                        y: 233
+                        angle: 1.2236108398437500e+02
+                        angle_quantized: 5
+                     -
+                        x: 260
+                        y: 208
+                        angle: 1.8054554748535156e+02
+                        angle_quantized: 0
+                     -
+                        x: 228
+                        y: 196
+                        angle: 3.3910411834716797e+01
+                        angle_quantized: 1
+                     -
+                        x: 14
+                        y: 151
+                        angle: 1.7396311950683594e+02
+                        angle_quantized: 0
+                     -
+                        x: 89
+                        y: 243
+                        angle: 1.0861263275146484e+02
+                        angle_quantized: 5
+                     -
+                        x: 121
+                        y: 19
+                        angle: 2.6490597534179688e+02
+                        angle_quantized: 4
+                     -
+                        x: 246
+                        y: 132
+                        angle: 3.5545428466796875e+02
+                        angle_quantized: 0
+                     -
+                        x: 195
+                        y: 230
+                        angle: 5.8189537048339844e+01
+                        angle_quantized: 3
+                     -
+                        x: 20
+                        y: 176
+                        angle: 1.5788612365722656e+02
+                        angle_quantized: 7
+                     -
+                        x: 3
+                        y: 106
+                        angle: 1.2829717636108398e+01
+                        angle_quantized: 1
+                     -
+                        x: 45
+                        y: 215
+                        angle: 1.3755773925781250e+02
+                        angle_quantized: 6
+                     -
+                        x: 13
+                        y: 129
+                        angle: 1.8237963867187500e+02
+                        angle_quantized: 0
+                     -
+                        x: 258
+                        y: 47
+                        angle: 1.8084234619140625e+02
+                        angle_quantized: 0
+                     -
+                        x: 243
+                        y: 106
+                        angle: 3.3657574462890625e+02
+                        angle_quantized: 7
+                     -
+                        x: 237
+                        y: 179
+                        angle: 2.6314945220947266e+01
+                        angle_quantized: 1
+                     -
+                        x: 218
+                        y: 59
+                        angle: 3.1640014648437500e+02
+                        angle_quantized: 6
+                     -
+                        x: 199
+                        y: 41
+                        angle: 3.0609365844726562e+02
+                        angle_quantized: 6
+                     -
+                        x: 29
+                        y: 76
+                        angle: 2.1052033996582031e+02
+                        angle_quantized: 1
+                     -
+                        x: 92
+                        y: 25
+                        angle: 2.4867117309570312e+02
+                        angle_quantized: 3
+                     -
+                        x: 260
+                        y: 244
+                        angle: 1.7670150756835938e+02
+                        angle_quantized: 0
+                     -
+                        x: 140
+                        y: 249
+                        angle: 8.7123794555664062e+01
+                        angle_quantized: 4
+                     -
+                        x: 71
+                        y: 34
+                        angle: 2.4375997924804688e+02
+                        angle_quantized: 3
+                     -
+                        x: 174
+                        y: 27
+                        angle: 2.8927331542968750e+02
+                        angle_quantized: 5
+                     -
+                        x: 116
+                        y: 249
+                        angle: 9.8588584899902344e+01
+                        angle_quantized: 4
+                     -
+                        x: 162
+                        y: 245
+                        angle: 7.5209396362304688e+01
+                        angle_quantized: 3
+                     -
+                        x: 259
+                        y: 186
+                        angle: 1.7762687683105469e+02
+                        angle_quantized: 0
+                     -
+                        x: 180
+                        y: 164
+                        angle: 1.8119947814941406e+02
+                        angle_quantized: 0
+                     -
+                        x: 179
+                        y: 102
+                        angle: 1.7939703369140625e+02
+                        angle_quantized: 0
+                     -
+                        x: 45
+                        y: 54
+                        angle: 2.2308523559570312e+02
+                        angle_quantized: 2
+                     -
+                        x: 245
+                        y: 63
+                        angle: 3.2699523925781250e+02
+                        angle_quantized: 7
+                     -
+                        x: 168
+                        y: 143
+                        angle: 3.5953927612304688e+02
+                        angle_quantized: 0
+                     -
+                        x: 233
+                        y: 47
+                        angle: 3.2242700195312500e+02
+                        angle_quantized: 6
+                     -
+                        x: 234
+                        y: 0
+                        angle: 8.9686981201171875e+01
+                        angle_quantized: 4
+                     -
+                        x: 237
+                        y: 215
+                        angle: 3.2805309295654297e+01
+                        angle_quantized: 2
+                     -
+                        x: 168
+                        y: 124
+                        angle: 3.5680303955078125e+02
+                        angle_quantized: 0
+                     -
+                        x: 180
+                        y: 186
+                        angle: 1.6685968017578125e+02
+                        angle_quantized: 7
+                     -
+                        x: 103
+                        y: 265
+                        angle: 9.1294326782226562e+01
+                        angle_quantized: 4
+                     -
+                        x: 0
+                        y: 20
+                        angle: 3.5448367309570312e+02
+                        angle_quantized: 0
+                     -
+                        x: 258
+                        y: 79
+                        angle: 1.7853982543945312e+02
+                        angle_quantized: 0
+                     -
+                        x: 98
+                        y: 198
+                        angle: 8.8014060974121094e+01
+                        angle_quantized: 4
+                     -
+                        x: 149
+                        y: 178
+                        angle: 8.9333938598632812e+01
+                        angle_quantized: 4
+                     -
+                        x: 21
+                        y: 214
+                        angle: 1.4909721374511719e+02
+                        angle_quantized: 6
+                     -
+                        x: 182
+                        y: 250
+                        angle: 2.5092092895507812e+02
+                        angle_quantized: 3
+                     -
+                        x: 1
+                        y: 59
+                        angle: 3.5712973022460938e+02
+                        angle_quantized: 0
+                     -
+                        x: 0
+                        y: 39
+                        angle: 3.5746694946289062e+02
+                        angle_quantized: 0
+                     -
+                        x: 199
+                        y: 192
+                        angle: 9.1891578674316406e+01
+                        angle_quantized: 4
+                     -
+                        x: 99
+                        y: 71
+                        angle: 2.6430737304687500e+02
+                        angle_quantized: 4
+                     -
+                        x: 155
+                        y: 90
+                        angle: 2.7275857543945312e+02
+                        angle_quantized: 4
+                     -
+                        x: 135
+                        y: 90
+                        angle: 2.6758581542968750e+02
+                        angle_quantized: 4
+                     -
+                        x: 68
+                        y: 198
+                        angle: 8.4993698120117188e+01
+                        angle_quantized: 4
+                     -
+                        x: 153
+                        y: 69
+                        angle: 2.8429522705078125e+02
+                        angle_quantized: 5
+                     -
+                        x: 71
+                        y: 255
+                        angle: 1.0933592987060547e+02
+                        angle_quantized: 5
+                     -
+                        x: 201
+                        y: 20
+                        angle: 3.0077746582031250e+02
+                        angle_quantized: 5
+                     -
+                        x: 78
+                        y: 72
+                        angle: 2.6678112792968750e+02
+                        angle_quantized: 4
+                     -
+                        x: 198
+                        y: 74
+                        angle: 2.6330151367187500e+02
+                        angle_quantized: 4
+                     -
+                        x: 8
+                        y: 192
+                        angle: 1.5375628662109375e+02
+                        angle_quantized: 7
+                     -
+                        x: 43
+                        y: 238
+                        angle: 1.3319418334960938e+02
+                        angle_quantized: 6
+                     -
+                        x: 264
+                        y: 121
+                        angle: 3.5531488037109375e+02
+                        angle_quantized: 0
+                     -
+                        x: 4
+                        y: 249
+                        angle: 1.3144805431365967e+00
+                        angle_quantized: 0
+                     -
+                        x: 134
+                        y: 54
+                        angle: 2.8556866455078125e+02
+                        angle_quantized: 5
+                     -
+                        x: 2
+                        y: 224
+                        angle: 3.5979901123046875e+02
+                        angle_quantized: 0
+                     -
+                        x: 119
+                        y: 145
+                        angle: 1.7979614257812500e+02
+                        angle_quantized: 0
+                     -
+                        x: 119
+                        y: 123
+                        angle: 1.8381338500976562e+02
+                        angle_quantized: 0
+                     -
+                        x: 21
+                        y: 56
+                        angle: 2.1553036499023438e+02
+                        angle_quantized: 2
+                     -
+                        x: 104
+                        y: 3
+                        angle: 2.6268371582031250e+02
+                        angle_quantized: 4
+                     -
+                        x: 64
+                        y: 53
+                        angle: 5.1273197174072266e+01
+                        angle_quantized: 2
+                     -
+                        x: 54
+                        y: 72
+                        angle: 2.6577255249023438e+02
+                        angle_quantized: 4
+                     -
+                        x: 52
+                        y: 26
+                        angle: 2.2964999389648438e+02
+                        angle_quantized: 2
+                     -
+                        x: 22
+                        y: 263
+                        angle: 2.6879165649414062e+02
+                        angle_quantized: 4
+                     -
+                        x: 128
+                        y: 215
+                        angle: 9.7542518615722656e+01
+                        angle_quantized: 4
+                     -
+                        x: 33
+                        y: 7
+                        angle: 8.4370124816894531e+01
+                        angle_quantized: 4
+                     -
+                        x: 95
+                        y: 108
+                        angle: 3.5891931152343750e+02
+                        angle_quantized: 0
+                     -
+                        x: 60
+                        y: 6
+                        angle: 8.9459602355957031e+01
+                        angle_quantized: 4
+                     -
+                        x: 96
+                        y: 165
+                        angle: 3.5450848388671875e+02
+                        angle_quantized: 0
+                     -
+                        x: 93
+                        y: 141
+                        angle: 1.9704510498046875e+02
+                        angle_quantized: 1
+                     -
+                        x: 186
+                        y: 4
+                        angle: 9.4267158508300781e+01
+                        angle_quantized: 4
+                     -
+                        x: 264
+                        y: 144
+                        angle: 3.1632835865020752e+00
+                        angle_quantized: 0
+                     -
+                        x: 53
+                        y: 263
+                        angle: 2.6152941894531250e+02
+                        angle_quantized: 4
+                     -
+                        x: 187
+                        y: 137
+                        angle: 3.5591510009765625e+02
+                        angle_quantized: 0
+                     -
+                        x: 73
+                        y: 124
+                        angle: 8.8386795043945312e+01
+                        angle_quantized: 4
+                     -
+                        x: 66
+                        y: 150
+                        angle: 270.
+                        angle_quantized: 4
+                     -
+                        x: 210
+                        y: 121
+                        angle: 8.7230323791503906e+01
+                        angle_quantized: 4
+                     -
+                        x: 49
+                        y: 126
+                        angle: 8.0690437316894531e+01
+                        angle_quantized: 4
+                     -
+                        x: 215
+                        y: 144
+                        angle: 2.6187051391601562e+02
+                        angle_quantized: 4
+                     -
+                        x: 45
+                        y: 147
+                        angle: 2.7253305053710938e+02
+                        angle_quantized: 4
+                     -
+                        x: 152
+                        y: 155
+                        angle: 2.6542684936523438e+02
+                        angle_quantized: 4
+                     -
+                        x: 151
+                        y: 113
+                        angle: 90.
+                        angle_quantized: 4
+                     -
+                        x: 260
+                        y: 226
+                        angle: 1.8153277587890625e+02
+                        angle_quantized: 0
+                     -
+                        x: 222
+                        y: 231
+                        angle: 5.0986194610595703e+01
+                        angle_quantized: 2
+                     -
+                        x: 220
+                        y: 34
+                        angle: 3.0581472778320312e+02
+                        angle_quantized: 6
+                     -
+                        x: 124
+                        y: 266
+                        angle: 9.0734367370605469e+01
+                        angle_quantized: 4
+                     -
+                        x: 211
+                        y: 4
+                        angle: 7.9721374511718750e+01
+                        angle_quantized: 4
+               -
+                  pyr_level: 1
+                  base_x: 51
+                  base_y: 50
+                  width: 133
+                  height: 134
+                  features:
+                     -
+                        x: 130
+                        y: 105
+                        angle: 1.7898173522949219e+02
+                        angle_quantized: 0
+                     -
+                        x: 0
+                        y: 27
+                        angle: 9.1333067417144775e-01
+                        angle_quantized: 0
+                     -
+                        x: 1
+                        y: 55
+                        angle: 1.0692255020141602e+01
+                        angle_quantized: 0
+                     -
+                        x: 0
+                        y: 9
+                        angle: 3.5209350585937500e+02
+                        angle_quantized: 0
+                     -
+                        x: 129
+                        y: 18
+                        angle: 1.8053039550781250e+02
+                        angle_quantized: 0
+                     -
+                        x: 84
+                        y: 51
+                        angle: 3.5946960449218750e+02
+                        angle_quantized: 0
+                     -
+                        x: 74
+                        y: 10
+                        angle: 2.7625140380859375e+02
+                        angle_quantized: 4
+                     -
+                        x: 84
+                        y: 81
+                        angle: 3.5707171630859375e+02
+                        angle_quantized: 0
+                     -
+                        x: 15
+                        y: 98
+                        angle: 1.4849285888671875e+02
+                        angle_quantized: 7
+                     -
+                        x: 117
+                        y: 0
+                        angle: 8.9599418640136719e+01
+                        angle_quantized: 4
+                     -
+                        x: 57
+                        y: 10
+                        angle: 2.6225381469726562e+02
+                        angle_quantized: 4
+                     -
+                        x: 33
+                        y: 116
+                        angle: 1.2319392395019531e+02
+                        angle_quantized: 5
+                     -
+                        x: 7
+                        y: 75
+                        angle: 1.7360058593750000e+02
+                        angle_quantized: 0
+                     -
+                        x: 117
+                        y: 41
+                        angle: 3.3440509033203125e+02
+                        angle_quantized: 7
+                     -
+                        x: 106
+                        y: 108
+                        angle: 4.3459335327148438e+01
+                        angle_quantized: 2
+                     -
+                        x: 122
+                        y: 78
+                        angle: 9.8478403091430664e+00
+                        angle_quantized: 0
+                     -
+                        x: 68
+                        y: 89
+                        angle: 9.2489059448242188e+01
+                        angle_quantized: 4
+                     -
+                        x: 90
+                        y: 119
+                        angle: 6.6216094970703125e+01
+                        angle_quantized: 3
+                     -
+                        x: 50
+                        y: 123
+                        angle: 1.0255964660644531e+02
+                        angle_quantized: 5
+                     -
+                        x: 71
+                        y: 45
+                        angle: 2.6833200073242188e+02
+                        angle_quantized: 4
+                     -
+                        x: 89
+                        y: 0
+                        angle: 9.1112167358398438e+01
+                        angle_quantized: 4
+                     -
+                        x: 106
+                        y: 26
+                        angle: 3.1736865234375000e+02
+                        angle_quantized: 6
+                     -
+                        x: 34
+                        y: 18
+                        angle: 2.3740548706054688e+02
+                        angle_quantized: 3
+                     -
+                        x: 17
+                        y: 34
+                        angle: 2.1450851440429688e+02
+                        angle_quantized: 2
+                     -
+                        x: 122
+                        y: 57
+                        angle: 3.5215222167968750e+02
+                        angle_quantized: 0
+                     -
+                        x: 75
+                        y: 124
+                        angle: 7.9695243835449219e+01
+                        angle_quantized: 3
+                     -
+                        x: 48
+                        y: 99
+                        angle: 8.9855705261230469e+01
+                        angle_quantized: 4
+                     -
+                        x: 95
+                        y: 96
+                        angle: 9.1304977416992188e+01
+                        angle_quantized: 4
+                     -
+                        x: 1
+                        y: 112
+                        angle: 5.8750426769256592e-01
+                        angle_quantized: 0
+                     -
+                        x: 129
+                        y: 34
+                        angle: 1.7985197448730469e+02
+                        angle_quantized: 0
+                     -
+                        x: 41
+                        y: 0
+                        angle: 8.9850433349609375e+01
+                        angle_quantized: 4
+                     -
+                        x: 47
+                        y: 36
+                        angle: 2.6760205078125000e+02
+                        angle_quantized: 4
+                     -
+                        x: 90
+                        y: 21
+                        angle: 1.1649952697753906e+02
+                        angle_quantized: 5
+                     -
+                        x: 98
+                        y: 37
+                        angle: 2.6768518066406250e+02
+                        angle_quantized: 4
+                     -
+                        x: 33
+                        y: 99
+                        angle: 8.6433990478515625e+01
+                        angle_quantized: 4
+                     -
+                        x: 60
+                        y: 74
+                        angle: 1.7686648559570312e+02
+                        angle_quantized: 0
+                     -
+                        x: 60
+                        y: 60
+                        angle: 1.8700050354003906e+02
+                        angle_quantized: 0
+                     -
+                        x: 77
+                        y: 65
+                        angle: 9.0437271118164062e+01
+                        angle_quantized: 4
+                     -
+                        x: 36
+                        y: 61
+                        angle: 8.7320549011230469e+01
+                        angle_quantized: 4
+                     -
+                        x: 14
+                        y: 113
+                        angle: 1.3785377502441406e+02
+                        angle_quantized: 6
+                     -
+                        x: 31
+                        y: 75
+                        angle: 2.7533135986328125e+02
+                        angle_quantized: 4
+                     -
+                        x: 21
+                        y: 63
+                        angle: 8.2681716918945312e+01
+                        angle_quantized: 4
+                     -
+                        x: 103
+                        y: 61
+                        angle: 8.5764335632324219e+01
+                        angle_quantized: 4
+                     -
+                        x: 61
+                        y: 130
+                        angle: 2.7133193969726562e+02
+                        angle_quantized: 4
+                     -
+                        x: 102
+                        y: 10
+                        angle: 3.0519641113281250e+02
+                        angle_quantized: 5
+                     -
+                        x: 102
+                        y: 74
+                        angle: 2.7471398925781250e+02
+                        angle_quantized: 4
+                     -
+                        x: 105
+                        y: 129
+                        angle: 2.7208215332031250e+02
+                        angle_quantized: 4
+                     -
+                        x: 65
+                        y: 0
+                        angle: 90.
+                        angle_quantized: 4
+                     -
+                        x: 77
+                        y: 34
+                        angle: 2.9034841918945312e+02
+                        angle_quantized: 5
+                     -
+                        x: 117
+                        y: 129
+                        angle: 2.7283355712890625e+02
+                        angle_quantized: 4

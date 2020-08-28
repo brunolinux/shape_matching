@@ -27,6 +27,9 @@ struct MatchingParams
     float scale_step;
 
     std::vector<int> T_vec; /// vector of T
+
+    void write(cv::FileStorage& fs) const;
+    void read(const cv::FileNode& fs);
 };
 
 struct MatchingResult
@@ -65,7 +68,13 @@ using MatchingResultVec = std::vector<MatchingResult>;
 
 class Matching {
 public:
-    explicit Matching(const MatchingParams &params = MatchingParams(), int number_feature_toplevel = 63);
+    explicit Matching(const MatchingParams &params = MatchingParams(),
+                      int det_num_feature_top = 63,
+                      float det_weak_thres = 30.f,
+                      float det_strong_thres = 60.f,
+                      int det_angle_bin_num = 8);
+
+    Matching(const MatchingParams &params, const PyrDetectorParams& detector_params);
 
     void addClassPyramid(const cv::Mat& src, const cv::Mat& mask, const std::string& class_id);
 
@@ -76,6 +85,13 @@ public:
                                            const cv::Rect& roi = cv::Rect(0, 0, 0, 0),
                                            const cv::Mat& mask = cv::Mat());
 
+    void writeMatchingParams(const std::string& file_name);
+
+    static Matching readMatchingParams(const std::string& file_name);
+
+    void writeClassPyramid(const std::string& file_name, const std::string& class_id);
+
+    void readClassPyramid(const std::string& file_name, const std::string& class_id);
 private:
     MatchingResultVec coarseMatching(const LinearMemories& lm,
                                      const Pattern& pattern,

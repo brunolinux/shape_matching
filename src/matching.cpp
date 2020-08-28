@@ -73,16 +73,65 @@ void MatchingParams::createAngleScaleVec(std::vector<float>& angle_vec,
     }
 }
 
+void MatchingParams::write(cv::FileStorage& fs) const {
+    fs << "{";
+    fs << "angle" << "{" << "start" << angle_start
+       << "end" << angle_end << "step" << angle_step << "}"
+       << "scale" << "{" << "start" << scale_start
+       << "end" << scale_end << "step" << scale_step << "}";
 
-Matching::Matching(const MatchingParams &params, int number_feature_toplevel)
+    fs << "T_vec" << "[";
+    for (auto t : T_vec) {
+        fs << t;
+    }
+    fs << "]";
+
+    fs << "}";
+}
+
+void MatchingParams::read(const cv::FileNode& fs)
+{
+    const cv::FileNode angle_fs = fs["angle"];
+    angle_start = (float)angle_fs["start"];
+    angle_end = (float)angle_fs["end"];
+    angle_step = (float)angle_fs["step"];
+    const cv::FileNode scale_fs = fs["scale"];
+    scale_start = (float)scale_fs["start"];
+    scale_end = (float)scale_fs["end"];
+    scale_step = (float)scale_fs["step"];
+
+    T_vec.clear();
+    const cv::FileNode t_vec_fs = fs["T_vec"];
+    CV_Assert(t_vec_fs.type() == cv::FileNode::SEQ);
+
+    cv::FileNodeIterator it = t_vec_fs.begin(), it_end = t_vec_fs.end();
+    for (; it != it_end; ++it)
+        T_vec.push_back((int)*it);
+}
+
+
+
+Matching::Matching(const MatchingParams &params, int det_num_feature_top,
+                   float det_weak_thres, float det_strong_thres, int det_angle_bin_num)
 :m_params(params)
 {
     m_params.createAngleScaleVec(m_angleVec, m_scaleVec);
 
-    m_detectorParams.num_feature_toplevel = number_feature_toplevel;
+    m_detectorParams.weak_threshold = det_weak_thres;
+    m_detectorParams.strong_threshold = det_strong_thres;
+    m_detectorParams.num_feature_toplevel = det_num_feature_top;
     m_detectorParams.pyramid_level = m_params.T_vec.size();
-    m_detectorParams.angle_bin_number = 8;  // default 8
+    m_detectorParams.angle_bin_number = det_angle_bin_num;  // default 8
 
+    m_detector = new PyramidDetector(m_detectorParams);
+}
+
+Matching::Matching(const MatchingParams &params, const PyrDetectorParams& detector_params)
+:m_params(params), m_detectorParams(detector_params)
+{
+    CV_Assert(m_params.T_vec.size() == detector_params.pyramid_level);
+
+    m_params.createAngleScaleVec(m_angleVec, m_scaleVec);
     m_detector = new PyramidDetector(m_detectorParams);
 }
 
@@ -174,26 +223,27 @@ MatchingResultVec Matching::coarseMatching(const LinearMemories& lm,
         }
     }
 
-    {
-        double minVal;
-        double maxVal;
-        cv::Point minLoc;
-        cv::Point maxLoc;
-        minMaxLoc(similarities, &minVal, &maxVal, &minLoc, &maxLoc );
-
-        std::cout << (maxVal * 100.f) / (4 * pattern.m_features.size()) << std::endl;
-/*        std::cout << "num feature: " << pattern.m_features.size() << "\t\t";
-        std::cout << "angle id:" << angle_id << "\t" << maxVal << "\n";
-        cv::Mat simShow;
-        similarities.convertTo(simShow, CV_8U, 255./90);
-        cv::imwrite("img/intermediate/" + std::to_string(angle_id) + ".png", simShow);
-
-        cv::Mat bk = cv::Mat::zeros(pattern.height, pattern.width, CV_8UC3);
-        for (int i = 0; i < pattern.m_features.size(); i ++) {
-            cv::circle(bk, cv::Point(pattern.m_features[i].x, pattern.m_features[i].y), 4, cv::Scalar(0, 0, 255), 2);
-        }
-        cv::imwrite("img/intermediate/feature" + std::to_string(angle_id) + ".png", bk);*/
-    }
+    // 测试 部分
+//    {
+//        double minVal;
+//        double maxVal;
+//        cv::Point minLoc;
+//        cv::Point maxLoc;
+//        minMaxLoc(similarities, &minVal, &maxVal, &minLoc, &maxLoc );
+//
+//        std::cout << (maxVal * 100.f) / (4 * pattern.m_features.size()) << std::endl;
+///*        std::cout << "num feature: " << pattern.m_features.size() << "\t\t";
+//        std::cout << "angle id:" << angle_id << "\t" << maxVal << "\n";
+//        cv::Mat simShow;
+//        similarities.convertTo(simShow, CV_8U, 255./90);
+//        cv::imwrite("img/intermediate/" + std::to_string(angle_id) + ".png", simShow);
+//
+//        cv::Mat bk = cv::Mat::zeros(pattern.height, pattern.width, CV_8UC3);
+//        for (int i = 0; i < pattern.m_features.size(); i ++) {
+//            cv::circle(bk, cv::Point(pattern.m_features[i].x, pattern.m_features[i].y), 4, cv::Scalar(0, 0, 255), 2);
+//        }
+//        cv::imwrite("img/intermediate/feature" + std::to_string(angle_id) + ".png", bk);*/
+//    }
 
     return std::move(candidates);
 }
@@ -324,5 +374,130 @@ MatchingResultVec Matching::matchClass(const cv::Mat& src, const std::string& cl
     std::sort(matching_vec.begin(), matching_vec.end());
     return matching_vec;
 }
+
+
+/////////////////////////////////////////////////////
+// write/read
+////////////////////////////////////////////////////
+static void write(cv::FileStorage& fs, const std::string&, const MatchingParams& x)
+{
+    x.write(fs);
+}
+
+
+static void read(const cv::FileNode& node, MatchingParams& x,
+                 const MatchingParams& default_value = MatchingParams())
+{
+    if(node.empty())
+        x = default_value;
+    else
+        x.read(node);
+}
+
+static void write(cv::FileStorage& fs, const std::string&, const PyrDetectorParams& x)
+{
+    x.write(fs);
+}
+
+static void read(const cv::FileNode& node, PyrDetectorParams& x,
+                 const PyrDetectorParams& default_value = PyrDetectorParams())
+{
+    if(node.empty())
+        x = default_value;
+    else
+        x.read(node);
+}
+
+
+void Matching::writeMatchingParams(const std::string &file_name)
+{
+    cv::FileStorage params_fs(file_name, cv::FileStorage::WRITE);
+
+    params_fs << "matching_parameter" << m_params;
+    params_fs << "detector_parameter" << m_detectorParams;
+}
+
+Matching Matching::readMatchingParams(const std::string &file_name)
+{
+    cv::FileStorage params_fs(file_name, cv::FileStorage::READ);
+    if (!params_fs.isOpened()) {
+        std::cerr << "config file: " << file_name << " is not existed!";
+        exit(-1);
+    }
+
+    MatchingParams matching_param;
+    PyrDetectorParams detector_params;
+    params_fs["matching_parameter"] >> matching_param;
+    params_fs["detector_parameter"] >> detector_params;
+    Matching matching(matching_param, detector_params);
+    return std::move(matching);
+}
+
+void Matching::writeClassPyramid(const std::string &file_name, const std::string& class_id)
+{
+    if (m_classPyramids.count(class_id) == 0) {
+        std::cerr << "the class: " << class_id << " does not exist";
+        exit(-1);
+    }
+
+    cv::FileStorage class_fs(file_name, cv::FileStorage::WRITE);
+    const auto pyr_vec =  m_classPyramids[class_id];
+
+    class_fs << "class_id" << class_id;
+    class_fs << "class_vec" << "[";
+    for (int i = 0; i < pyr_vec.size(); i ++) {
+        class_fs << "{"
+                 << "template_id" << i
+                 << "scale_pyramid_vec" << "[";
+        for (int j = 0; j < pyr_vec[i].size(); j ++) {
+            class_fs << "{"
+                     << "scale" << m_scaleVec[j]
+                     << "pyramid" << pyr_vec[i][j]
+                     << "}";
+        }
+        class_fs << "]" << "}";
+    }
+    class_fs << "]";
+}
+
+void Matching::readClassPyramid(const std::string &file_name, const std::string& class_id)
+{
+    if (m_classPyramids.count(class_id) != 0) {
+        m_classPyramids[class_id].clear();
+    }
+
+    cv::FileStorage class_fs(file_name, cv::FileStorage::READ);
+    CV_Assert((std::string)class_fs["class_id"] == class_id);
+
+    const cv::FileNode vec_fs = class_fs["class_vec"];
+    CV_Assert(vec_fs.type() == cv::FileNode::SEQ);
+
+    cv::FileNodeIterator temp_it = vec_fs.begin(), temp_it_end = vec_fs.end();
+    int temp_ind = 0;
+    std::vector<std::vector<Pyramid>> pyr_vec_vec;
+    for (; temp_it != temp_it_end; ++temp_it) {
+        CV_Assert((int)((*temp_it)["template_id"]) == temp_ind);
+        temp_ind ++;
+        cv::FileNode temp_node = (*temp_it)["scale_pyramid_vec"];
+
+        CV_Assert(temp_node.type() == cv::FileNode::SEQ);
+        cv::FileNodeIterator it = temp_node.begin(), it_end = temp_node.end();
+
+        std::vector<Pyramid> pyr_vec;
+        int ind = 0;
+        for (; it != it_end; ++it) {
+            CV_Assert((float)(*it)["scale"] == m_scaleVec[ind]);
+            ind ++;
+
+            Pyramid pyr;
+            (*it)["pyramid"] >> pyr;
+            pyr_vec.push_back(pyr);
+        }
+        pyr_vec_vec.push_back(pyr_vec);
+    }
+    m_classPyramids[class_id] = std::move(pyr_vec_vec);
+}
+
+
 
 
