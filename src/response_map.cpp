@@ -36,7 +36,6 @@ LinearMemoryPyramid createLinearMemoryPyramid(const cv::Mat& src, const cv::Mat&
 
         {
             if (!mask_pyr.empty()) {
-                quantized_masked = cv::Mat::zeros(quantized.size(), CV_8U);
                 quantized.copyTo(quantized_masked, mask_pyr);
             } else {
                 quantized_masked = quantized;
@@ -44,7 +43,7 @@ LinearMemoryPyramid createLinearMemoryPyramid(const cv::Mat& src, const cv::Mat&
         }
 
         std::vector<cv::Mat> response_maps;
-        spread(quantized, spread_quantized, T, angle_bin_number);
+        spread(quantized_masked, spread_quantized, T, angle_bin_number);
         computeResponseMaps(spread_quantized, response_maps);
 
         LinearMemories &memories = lm_pyramid[l];
