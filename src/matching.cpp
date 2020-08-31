@@ -224,24 +224,26 @@ MatchingCandidateVec Matching::coarseMatching(const LinearMemories& lm,
 
     // 测试 部分
 //    {
+//        static int ind = 0;
 //        double minVal;
 //        double maxVal;
 //        cv::Point minLoc;
 //        cv::Point maxLoc;
 //        minMaxLoc(similarities, &minVal, &maxVal, &minLoc, &maxLoc );
 //
-//        //std::cout << (maxVal * 100.f) / (4 * pattern.m_features.size()) << std::endl;
-//        std::cout << "num feature: " << pattern.m_features.size() << "\t\t";
-//        std::cout << "angle id:" << angle_id << "\t" << maxVal << "\n";
+//        std::cout << "id: " << ind << "\tmax response: " << (maxVal * 100.f) / (4 * pattern.m_features.size()) << std::endl;
+//        std::cout << "num feature: " << pattern.m_features.size() << std::endl;
+//
 //        cv::Mat simShow;
 //        similarities.convertTo(simShow, CV_8U, 255./90);
-//        cv::imwrite("../../img/tmp/" + std::to_string(angle_id) + ".png", simShow);
+//        cv::imwrite("img/tmp/" + std::to_string(ind) + ".png", simShow);
 //
 //        cv::Mat bk = cv::Mat::zeros(pattern.height, pattern.width, CV_8UC3);
 //        for (int i = 0; i < pattern.m_features.size(); i ++) {
 //            cv::circle(bk, cv::Point(pattern.m_features[i].x, pattern.m_features[i].y), 4, cv::Scalar(0, 0, 255), 2);
 //        }
-//        cv::imwrite("../../img/tmp/feature" + std::to_string(angle_id) + ".png", bk);
+//        cv::imwrite("img/tmp/feature_" + std::to_string(ind) + ".png", bk);
+//        ind ++;
 //    }
 
     return std::move(candidates);
@@ -255,8 +257,7 @@ MatchingResultVec Matching::matchClass(const cv::Mat& src, const std::string& cl
     MatchingResultVec matching_vec;
     // create linear memory
     LinearMemoryPyramid linearMemPyr = createLinearMemoryPyramid(src, mask, m_params.T_vec,
-        m_detectorParams.weak_threshold,
-        m_detectorParams.angle_bin_number);
+        m_detectorParams.weak_threshold, m_detectorParams.angle_bin_number);
     //
     int pyramid_level = m_detectorParams.pyramid_level;
     std::vector<cv::Size> imgSizePyr = getPyrSize(src.size(), pyramid_level);
@@ -264,7 +265,7 @@ MatchingResultVec Matching::matchClass(const cv::Mat& src, const std::string& cl
     for (int template_id = 0; template_id < m_classPyramids.at(class_id).size(); template_id ++) {  // index: per image (template)
         const auto & pyr_origin_vec = m_classPyramids.at(class_id)[template_id];
         for (int scale_id = 0; scale_id < pyr_origin_vec.size(); scale_id++) {                  // index: per scale
-            for (int angle_id = 0; angle_id < m_angleVec.size(); angle_id++) {                  // index: per angle
+            for (int angle_id = 0; angle_id < m_angleVec.size(); angle_id++) {                  // index: per angle (degree)
 
                 float angle = m_angleVec[angle_id];
                 Pyramid pyr = pyr_origin_vec[scale_id].rotatePyramid(angle, m_detectorParams.angle_bin_number);
@@ -366,7 +367,7 @@ MatchingResultVec Matching::matchClass(const cv::Mat& src, const std::string& cl
 
                 for (const auto& candidate : candidates) {
                     matching_vec.push_back(MatchingResult(candidate.x, candidate.y,
-                                                          pyr[0].width, pyr[0].height,
+                                                          pyr.getPyrLevel0Range(),
                                                           candidate.score,
                                                           scale_id, m_scaleVec[scale_id],
                                                           angle_id, m_angleVec[angle_id],
@@ -392,7 +393,8 @@ Matching::matchClassWithNMS(const cv::Mat &src, const std::string &class_id,
         std::vector<cv::Rect> bboxes;
         std::vector<float> scores;
         for (const auto& match : matching_vec) {
-            bboxes.push_back(cv::Rect(match.x, match.y, match.width, match.height));
+            bboxes.push_back(cv::Rect(match.x, match.y,
+                                      match.origin_temp_rect.width, match.origin_temp_rect.height));
             scores.push_back(match.similarity);
         }
         NMSBoxes(bboxes, scores, 0, nms_threshold, idxs, eta, top_k);
@@ -405,6 +407,28 @@ Matching::matchClassWithNMS(const cv::Mat &src, const std::string &class_id,
     return new_matching_vec;
 }
 
+cv::Matx33f Matching::getMatchingMatrix(const MatchingResult &match)
+{
+    cv::Matx33f scale_mat;
+    scale_mat << match.scale, 0, 0,
+                 0, match.scale, 0,
+                 0, 0, 1;
+
+    const Pyramid &pyr = m_classPyramids.at(match.class_id)[match.template_id][match.scale_id];
+
+    cv::Point2f center = pyr.getPatternCenter(0);
+    float _sin_angle = sin(match.angle * CV_PI / 180);
+    float _cos_angle = cos(match.angle * CV_PI / 180);
+    auto rotation_mat = createRotationMatrix(center, _sin_angle, _cos_angle);
+
+    int delta_x = match.x - match.origin_temp_rect.x;
+    int delta_y = match.y - match.origin_temp_rect.y;
+    cv::Matx33f trans_mat;
+    trans_mat << 1, 0, delta_x,
+                 0, 1, delta_y,
+                 0, 0, 1;
+    return trans_mat * rotation_mat * scale_mat;
+}
 
 /////////////////////////////////////////////////////
 // write/read
@@ -527,6 +551,8 @@ void Matching::readClassPyramid(const std::string &file_name, const std::string&
     }
     m_classPyramids[class_id] = std::move(pyr_vec_vec);
 }
+
+
 
 
 

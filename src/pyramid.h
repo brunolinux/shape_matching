@@ -77,11 +77,18 @@ public:
                            m_pattern[index].base_y + m_pattern[index].height / 2);
     }
 
+    cv::Rect getPyrLevel0Range() const {
+        const auto& pattern = m_pattern[0];
+        return cv::Rect(pattern.base_x, pattern.base_y, pattern.width, pattern.height);
+    }
+
     void write(cv::FileStorage& fs) const;
     void read(const cv::FileNode& fs);
 private:
     std::vector<Pattern> m_pattern;
 };
+
+cv::Matx33f createRotationMatrix(const cv::Point2f& _center, float _sin_angle, float _cos_angle);
 
 class PyramidDetector {
 public:

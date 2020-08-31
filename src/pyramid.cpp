@@ -33,9 +33,11 @@ Pyramid Pyramid::rotatePyramid(float _angle, int angle_bin_number) const
         cv::Point2f _center = getPatternCenter(l);
         cv::Point2f _base(m_pattern[l].base_x, m_pattern[l].base_y);
 
+        cv::Matx33f rotation_matrix = createRotationMatrix(_center, _sin_angle, _cos_angle);
+
         Pattern new_p;
         for (const auto& f: m_pattern[l].m_features) {
-            new_p.m_features.push_back(f.rotateFeature(_center, _base, _angle, _sin_angle, _cos_angle, angle_bin_number));
+            new_p.m_features.push_back(f.rotateFeature(_base, _angle, rotation_matrix, angle_bin_number));
         }
 
         new_p.pyramid_level = l;
@@ -133,6 +135,29 @@ Pyramid PyramidDetector::detect(const cv::Mat &src, const cv::Mat &mask) const
     return pyramid;
 }
 
+cv::Matx33f createRotationMatrix(const cv::Point2f& _center, float _sin_angle, float _cos_angle)
+{
+    cv::Matx33f t0, t1;
+    t0 << 1, 0, -_center.x,
+            0, 1, -_center.y,
+            0, 0, 1;
+    t1 << 1, 0, _center.x,
+            0, 1, _center.y,
+            0, 0, 1;
+
+    // 注意: x 轴水平朝右，y 轴竖直朝下
+    // angle 是逆时针 (和 OpenCV 一致)
+    /*
+    [   cos_a, sin_a,
+       -sin_a, cos_a ]
+    */
+    cv::Matx33f rot;
+    rot <<  _cos_angle, _sin_angle, 0,
+           -_sin_angle, _cos_angle, 0,
+            0,           0,         1;
+
+    return t1 * rot * t0;
+}
 
 /////////////////////////////////////////////////////
 // write/read

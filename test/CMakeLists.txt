@@ -1,5 +1,5 @@
 
-set(target_list test_nms test_feature test_spread 
+set(target_list test_response_nms test_feature test_spread
     test_response test_angle_scale_pair test_linearize
     test_similarity test_readwrite)
 

@@ -10,11 +10,11 @@ void test()
 {
     std::vector<int> T_vec{4, 8};
     int py_level = T_vec.size();
-    MatchingParams params(0, 90, 0.5, 1, 1, 1, T_vec);
+    MatchingParams params(270, 360, 0.5, 1, 1, 1, T_vec);
     Matching matching(params, 2000);
 
     {
-        Mat img = imread("../../img/circle_train.bmp");
+        Mat img = imread("img/circle_train.bmp");
         assert(!img.empty() && "check your img path");
 
         Mat mask = cv::Mat::zeros(img.size(), CV_8UC1);
@@ -34,7 +34,7 @@ void test()
     }
 
     for (int i = 0; i < 17; i++) {
-        Mat test_img = imread("../../img/circle_rotate_" + std::to_string(i) + ".bmp");
+        Mat test_img = imread("img/circle_rotate_" + std::to_string(i) + ".bmp");
         assert(!test_img.empty() && "check your img path");
 
         int padding = 250;
@@ -76,7 +76,6 @@ void test()
             std::cout << icp_diff_angle << std::endl;
         }
     }
-
 }
 
 int main() {

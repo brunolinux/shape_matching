@@ -19,7 +19,7 @@ struct MatchingParams
 
     void createAngleScaleVec(std::vector<float>& angle_vec, std::vector<float>& scale_vec) const;
 
-    float angle_start;
+    float angle_start;          ///< angle 是逆时针角度 (counter-clockwise)
     float angle_end;
     float angle_step;
     float scale_start;
@@ -34,14 +34,14 @@ struct MatchingParams
 
 struct MatchingResult
 {
-    MatchingResult(int _x, int _y, int _w, int _h, float _sim,
+    MatchingResult(int _x, int _y, const cv::Rect& range, float _sim,
                    int _scale_id, float _scale,
                    int _angle_id, float _angle,
                    int _template_id, const std::string& _id)
-        :x(_x), y(_y), width(_w), height(_h), similarity(_sim),
-         scale_id(_scale_id), scale(_scale),
-         angle_id(_angle_id), angle(_angle),
-         template_id(_template_id), class_id(_id)
+        : x(_x), y(_y), origin_temp_rect(range), similarity(_sim),
+          scale_id(_scale_id), scale(_scale),
+          angle_id(_angle_id), angle(_angle),
+          template_id(_template_id), class_id(_id)
     {}
 
     /// Sort matches with high similarity to the front
@@ -56,13 +56,12 @@ struct MatchingResult
 
     int x;
     int y;
-    int width;
-    int height;
+    cv::Rect origin_temp_rect;
     float similarity;
     int scale_id;
     float scale;
     int angle_id;
-    float angle;
+    float angle;                ///< angle 是逆时针角度 (counter-clockwise)
     int template_id;
     std::string class_id;
 };
@@ -93,7 +92,6 @@ public:
 
     void addClassPyramid(const cv::Mat& src, const cv::Mat& mask, const std::string& class_id);
 
-    Pyramid getClassPyramid(const MatchingResult& match) const;
 
     MatchingResultVec matchClass(const cv::Mat& src, const std::string& class_id,
                                  float threshold,
@@ -103,6 +101,9 @@ public:
                                         float score_threshold, float nms_threshold,
                                         const cv::Mat& mask = cv::Mat(),
                                         const float eta=1, const int top_k=0) const;
+
+    Pyramid getClassPyramid(const MatchingResult& match) const;
+    cv::Matx33f getMatchingMatrix(const MatchingResult& match);
 
     void writeMatchingParams(const std::string& file_name) const;
 

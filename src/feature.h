@@ -8,8 +8,6 @@
 #include <vector>
 #include <opencv2/core.hpp>
 
-
-
 struct Feature {
     Feature() {
         x = 0; y = 0; angle_quantized = 0; angle = 0.f;
@@ -24,8 +22,8 @@ struct Feature {
         return (x-rhs.x)*(x-rhs.x) + (y-rhs.y)*(y-rhs.y);
     }
 
-    Feature rotateFeature(const cv::Point2f& _center, const cv::Point2f& _base,
-                          float _angle, float _sin_angle, float _cos_angle, int angle_bin_number) const;
+    Feature rotateFeature(const cv::Point2f& _base, float _angle,
+                          const cv::Matx33f& rotationMatrix, int angle_bin_number) const;
 
     int x;
     int y;

@@ -19,23 +19,18 @@ void read(const cv::FileNode& node, Feature& feature, const Feature& default_val
 
 
 // 注意: angle 是顺时针角度
-Feature Feature::rotateFeature(const cv::Point2f& _center, const cv::Point2f& _base,
-                               float _angle, float _sin_angle, float _cos_angle, int angle_bin_number) const
+Feature Feature::rotateFeature(const cv::Point2f& _base, float _angle,
+                               const cv::Matx33f& rotationMatrix, int angle_bin_number) const
 {
     // feature 坐标是相对坐标 (在 pyramid 类的 cropLocationRange 实现)
-    cv::Point2f p = cv::Point2f(x, y) + _base - _center;
+    cv::Matx31f p, rot_p;
+    p << x + _base.x, y + _base.y, 1.f;
+    rot_p = rotationMatrix * p;
 
-    //  注意: x 轴水平朝右，y 轴竖直朝下
-    /*
-    [  cos_a, -sin_a,
-       sin_a, cos_a ]
-    */
-    cv::Point2f rot_p;
-    rot_p.x = _cos_angle * p.x - _sin_angle * p.y + _center.x;
-    rot_p.y = _sin_angle * p.x + _cos_angle * p.y + _center.y;
-
-    int new_x = round(rot_p.x);
-    int new_y = round(rot_p.y);
+    // 注意: 这里没有减去 _base
+    // 是因为 pattern 整体会 cropRange(), 重新计算基准坐标和 feature 的相对 x, y
+    int new_x = round(rot_p(0));
+    int new_y = round(rot_p(1));
 
     float new_angle = angle + _angle;
     while (new_angle > 360) new_angle -= 360;

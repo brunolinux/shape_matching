@@ -112,7 +112,7 @@ void test_rotatePyr(const cv::Mat& src, float angle)
 
 	cv::Mat src_rot;
 	cv::Point2f center = pyramid.getPatternCenter(0);
-	cv::Mat rot_mat = cv::getRotationMatrix2D(center, 360 - angle, 1.);
+	cv::Mat rot_mat = cv::getRotationMatrix2D(center, angle, 1.);
 	cv::warpAffine(src, src_rot, rot_mat, src.size());
     cv::cvtColor(src_rot, src_rot, CV_GRAY2BGR);
 	
