@@ -5,6 +5,7 @@
 #include "matching.h"
 #include "similarity.h"
 #include "response_map.h"
+#include "nms.h"
 #include <opencv2/opencv.hpp>
 
 MatchingParams::MatchingParams()
@@ -379,6 +380,31 @@ MatchingResultVec Matching::matchClass(const cv::Mat& src, const std::string& cl
     return matching_vec;
 }
 
+MatchingResultVec
+Matching::matchClassWithNMS(const cv::Mat &src, const std::string &class_id,
+                            float score_threshold, float nms_threshold,
+                            const cv::Mat &mask, const float eta, const int top_k) const
+{
+    auto matching_vec = matchClass(src, class_id, score_threshold, mask);
+
+    std::vector<int> idxs;
+    {
+        std::vector<cv::Rect> bboxes;
+        std::vector<float> scores;
+        for (const auto& match : matching_vec) {
+            bboxes.push_back(cv::Rect(match.x, match.y, match.width, match.height));
+            scores.push_back(match.similarity);
+        }
+        NMSBoxes(bboxes, scores, 0, nms_threshold, idxs, eta, top_k);
+    }
+
+    MatchingResultVec new_matching_vec;
+    for (const auto id : idxs) {
+        new_matching_vec.push_back(std::move(matching_vec[id]));
+    }
+    return new_matching_vec;
+}
+
 
 /////////////////////////////////////////////////////
 // write/read
@@ -501,6 +527,8 @@ void Matching::readClassPyramid(const std::string &file_name, const std::string&
     }
     m_classPyramids[class_id] = std::move(pyr_vec_vec);
 }
+
+
 
 
 

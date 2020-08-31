@@ -45,6 +45,7 @@ void test()
     Mat img = padded_test_img(roi).clone();
     assert(img.isContinuous());
 
+
     std::vector<MatchingResult> matches = matching.matchClass(img, "test", 90);
 
     for (int i = 0; i < matches.size(); i ++) {
@@ -54,11 +55,11 @@ void test()
 
     std::cout << "After NMS removal" << std::endl;
     // nms remove
-    std::vector<int> idxs;
-    NMSBoxes(matches, 0, 0.5f, idxs);
-    for (auto id : idxs) {
-        std::cout << matches[id].x << ", " << matches[id].y << "\t" << matches[id].angle
-                  << "\t" << matches[id].similarity << std::endl;
+    std::vector<MatchingResult> new_matches = matching.matchClassWithNMS(img, "test", 90, 0.5);
+
+    for (int i = 0; i < new_matches.size(); i ++) {
+        std::cout << new_matches[i].x << ", " << new_matches[i].y << "\t" << new_matches[i].angle
+                  << "\t" << new_matches[i].similarity << std::endl;
     }
 
 /*    // construct scene

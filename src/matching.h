@@ -99,6 +99,11 @@ public:
                                  float threshold,
                                  const cv::Mat& mask = cv::Mat()) const;
 
+    MatchingResultVec matchClassWithNMS(const cv::Mat& src, const std::string& class_id,
+                                        float score_threshold, float nms_threshold,
+                                        const cv::Mat& mask = cv::Mat(),
+                                        const float eta=1, const int top_k=0) const;
+
     void writeMatchingParams(const std::string& file_name) const;
 
     static Matching readMatchingParams(const std::string& file_name);

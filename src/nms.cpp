@@ -87,16 +87,3 @@ void NMSBoxes(const std::vector<cv::Rect>& bboxes, const std::vector<float>& sco
 {
     NMSFast_(bboxes, scores, score_threshold, nms_threshold, eta, top_k, indices, rectOverlap);
 }
-
-void NMSBoxes(const MatchingResultVec &matching_vec,
-              const float score_threshold, const float nms_threshold,
-              std::vector<int> &indices, const float eta, const int top_k)
-{
-    std::vector<cv::Rect> bboxes;
-    std::vector<float> scores;
-    for (const auto& match : matching_vec) {
-        bboxes.push_back(cv::Rect(match.x, match.y, match.width, match.height));
-        scores.push_back(match.similarity);
-    }
-    NMSFast_(bboxes, scores, score_threshold, nms_threshold, eta, top_k, indices, rectOverlap);
-}
