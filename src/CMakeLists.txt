@@ -1,5 +1,6 @@
 add_library(shape_matching feature.cpp feature_util.cpp
-       	 	pyramid.cpp matching.cpp response_map.cpp similarity.cpp)
+       	 	pyramid.cpp matching.cpp response_map.cpp similarity.cpp
+            nms.cpp)
 target_link_libraries(shape_matching PUBLIC ${OpenCV_LIBS})
 
 if (USE_MIPP)

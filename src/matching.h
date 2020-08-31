@@ -34,10 +34,11 @@ struct MatchingParams
 
 struct MatchingResult
 {
-    MatchingResult(int _x, int _y, float _sim, int _scale_id, float _scale,
+    MatchingResult(int _x, int _y, int _w, int _h, float _sim,
+                   int _scale_id, float _scale,
                    int _angle_id, float _angle,
                    int _template_id, const std::string& _id)
-        :x(_x), y(_y), similarity(_sim),
+        :x(_x), y(_y), width(_w), height(_h), similarity(_sim),
          scale_id(_scale_id), scale(_scale),
          angle_id(_angle_id), angle(_angle),
          template_id(_template_id), class_id(_id)
@@ -55,6 +56,8 @@ struct MatchingResult
 
     int x;
     int y;
+    int width;
+    int height;
     float similarity;
     int scale_id;
     float scale;
@@ -63,8 +66,20 @@ struct MatchingResult
     int template_id;
     std::string class_id;
 };
-
 using MatchingResultVec = std::vector<MatchingResult>;
+
+
+struct MatchingCandidate {
+    MatchingCandidate(int _x, int _y, float _score)
+            :x(_x), y(_y), score(_score)
+    {}
+
+    int x;
+    int y;
+    float score;
+};
+using MatchingCandidateVec = std::vector<MatchingCandidate>;
+
 
 class Matching {
 public:
@@ -78,27 +93,24 @@ public:
 
     void addClassPyramid(const cv::Mat& src, const cv::Mat& mask, const std::string& class_id);
 
-    Pyramid getClassPyramid(const MatchingResult& match);
+    Pyramid getClassPyramid(const MatchingResult& match) const;
 
     MatchingResultVec matchClass(const cv::Mat& src, const std::string& class_id,
-                                           float threshold,
-                                           const cv::Rect& roi = cv::Rect(0, 0, 0, 0),
-                                           const cv::Mat& mask = cv::Mat());
+                                 float threshold,
+                                 const cv::Mat& mask = cv::Mat()) const;
 
-    void writeMatchingParams(const std::string& file_name);
+    void writeMatchingParams(const std::string& file_name) const;
 
     static Matching readMatchingParams(const std::string& file_name);
 
-    void writeClassPyramid(const std::string& file_name, const std::string& class_id);
+    void writeClassPyramid(const std::string& file_name, const std::string& class_id) const;
 
     void readClassPyramid(const std::string& file_name, const std::string& class_id);
 private:
-    MatchingResultVec coarseMatching(const LinearMemories& lm,
+    MatchingCandidateVec coarseMatching(const LinearMemories& lm,
                                      const Pattern& pattern,
                                      const cv::Size& img_size, int lowest_T,
-                                     float threshold,
-                                     int scale_id, int angle_id,
-                                     int template_id, const std::string& class_id);
+                                     float threshold) const;
 
     // class id (string) --> pyramid (images) vector (consider scale vector)
     std::map<std::string, std::vector<std::vector<Pyramid>>> m_classPyramids;

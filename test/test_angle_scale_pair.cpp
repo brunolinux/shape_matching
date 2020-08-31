@@ -88,7 +88,9 @@ void test_rotatePyr(const cv::Mat& src, float angle)
 
 	// origin pyramid
 	auto pyramid = detector.detect(src, cv::Mat());
-	cv::Mat src_draw = src.clone();
+	cv::Mat src_draw;
+    cv::cvtColor(src, src_draw, CV_GRAY2BGR);
+
 	auto src_draw_vec0 = draw_pyramid(src_draw, pyramid);
 	for (int i = 0; i < src_draw_vec0.size(); i++) {
 		std::string name = "old_py" + std::to_string(i);
@@ -112,6 +114,7 @@ void test_rotatePyr(const cv::Mat& src, float angle)
 	cv::Point2f center = pyramid.getPatternCenter(0);
 	cv::Mat rot_mat = cv::getRotationMatrix2D(center, 360 - angle, 1.);
 	cv::warpAffine(src, src_rot, rot_mat, src.size());
+    cv::cvtColor(src_rot, src_rot, CV_GRAY2BGR);
 	
 	auto src_draw_vec = draw_pyramid(src_rot, new_pyramid);
 

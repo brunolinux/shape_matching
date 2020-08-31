@@ -3,6 +3,7 @@
 #include "src/matching.h"
 #include "src/cuda_icp/scene/edge_scene/edge_scene.h"
 #include "src/cuda_icp/icp.h"
+#include "src/nms.h"
 
 using namespace cv;
 
@@ -51,6 +52,14 @@ void test()
                   << "\t" << matches[i].similarity << std::endl;
     }
 
+    std::cout << "After NMS removal" << std::endl;
+    // nms remove
+    std::vector<int> idxs;
+    NMSBoxes(matches, 0, 0.5f, idxs);
+    for (auto id : idxs) {
+        std::cout << matches[id].x << ", " << matches[id].y << "\t" << matches[id].angle
+                  << "\t" << matches[id].similarity << std::endl;
+    }
 
 /*    // construct scene
     Scene_edge scene;
