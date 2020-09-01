@@ -14,7 +14,7 @@ void test()
     Matching matching(params, 2000);
 
     {
-        Mat img = imread("../../img/circle_train.bmp");
+        Mat img = imread("img/circle_train.bmp");
         assert(!img.empty() && "check your img path");
 
         Mat mask = cv::Mat::zeros(img.size(), CV_8UC1);
@@ -33,7 +33,7 @@ void test()
         matching.addClassPyramid(padded_img, padded_mask, "test");
     }
 
-    Mat test_img = imread("../../img/circle_rotate_train.bmp");
+    Mat test_img = imread("img/circle_rotate_train.bmp");
     assert(!test_img.empty() && "check your img path");
 
     int padding = 250;

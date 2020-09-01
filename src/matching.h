@@ -106,12 +106,12 @@ public:
     cv::Matx33f getMatchingMatrix(const MatchingResult& match);
 
     void writeMatchingParams(const std::string& file_name) const;
-
     static Matching readMatchingParams(const std::string& file_name);
 
     void writeClassPyramid(const std::string& file_name, const std::string& class_id) const;
-
     void readClassPyramid(const std::string& file_name, const std::string& class_id);
+
+    cv::Mat createPaddedImage(const cv::Mat& src) const;
 private:
     MatchingCandidateVec coarseMatching(const LinearMemories& lm,
                                      const Pattern& pattern,

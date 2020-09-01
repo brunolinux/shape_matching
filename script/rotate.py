@@ -1,6 +1,7 @@
 from PIL import Image
 
 # 逆时针角度为正
+# 顺时针 2.15 开始, 隔 5 度 旋转一次
 angle = -2.15
 step = -5
 

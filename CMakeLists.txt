@@ -20,8 +20,16 @@ endif()
 
 add_subdirectory(src)
 
+add_subdirectory(test)
+
 add_executable(demo main.cpp)
 target_link_libraries(demo shape_matching cuda_icp)
 
-add_subdirectory(test)
-add_subdirectory(self_test)
+add_executable(circle main2.cpp)
+target_link_libraries(circle shape_matching cuda_icp)
+target_include_directories(circle PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+add_executable(circle_rotate main_rotate.cpp)
+target_link_libraries(circle_rotate shape_matching cuda_icp)
+target_include_directories(circle_rotate PRIVATE ${CMAKE_SOURCE_DIR}/src)
+

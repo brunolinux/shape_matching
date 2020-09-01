@@ -430,6 +430,25 @@ cv::Matx33f Matching::getMatchingMatrix(const MatchingResult &match)
     return trans_mat * rotation_mat * scale_mat;
 }
 
+cv::Mat Matching::createPaddedImage(const cv::Mat &src) const
+{
+    CV_Assert(!src.empty());
+
+    const auto& T_vec = m_params.T_vec;
+    int padding = (int)pow(2, T_vec.size()-1) * T_vec[T_vec.size()-1];
+
+    cv::Mat padded_src;
+    cv::copyMakeBorder(src, padded_src, padding, padding, padding, padding, cv::BORDER_CONSTANT, cv::Scalar::all(0));
+
+    int n = padded_src.rows/padding;
+    int m = padded_src.cols/padding;
+    cv::Rect roi(0, 0, padding*m , padding*n);
+
+    cv::Mat ret =  padded_src(roi).clone();
+    CV_Assert(ret.isContinuous());
+    return ret;
+}
+
 /////////////////////////////////////////////////////
 // write/read
 ////////////////////////////////////////////////////
@@ -551,6 +570,8 @@ void Matching::readClassPyramid(const std::string &file_name, const std::string&
     }
     m_classPyramids[class_id] = std::move(pyr_vec_vec);
 }
+
+
 
 
 
