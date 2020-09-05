@@ -446,7 +446,7 @@ cv::Mat Matching::createPaddedImage(const cv::Mat &src) const
 
     cv::Mat ret =  padded_src(roi).clone();
     CV_Assert(ret.isContinuous());
-    return ret;
+    return std::move(ret);
 }
 
 /////////////////////////////////////////////////////

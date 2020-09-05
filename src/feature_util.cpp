@@ -96,7 +96,7 @@ void quantizedOrientations(const cv::Mat &src, cv::Mat &magnitude,
         // phase 得到的是顺时针角度
         phase(sobel_dx, sobel_dy, angle, true);
         // 顺时针变为逆时针
-        angle = cv::Mat::ones(angle.size(), angle.type()) * 359 - angle;
+        angle = cv::Mat::ones(angle.size(), angle.type()) * 360 - angle;
         hysteresisGradient(magnitude, angle, quantized_angle, threshold * threshold, angle_bin_number);
     }else{
         magnitude.create(src.size(), CV_32F);
