@@ -152,7 +152,7 @@ void similarityLocal(const std::vector<cv::Mat> &linear_memories, const Pattern 
     CV_Assert(pattern.m_features.size() < 8192);
 
     int W = img_size.width / T;
-    // ������ΧΪ [-8T, 8T], ��Ϊ�Ǽ������������ 16 x 16
+    // 搜索范围为 [-8T, 8T], 因为是间隔搜索，所以 16 x 16
     dst = cv::Mat::zeros(16, 16, CV_16U);
 
     int offset_x = (center.x / T - 8) * T;

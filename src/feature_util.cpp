@@ -34,6 +34,8 @@ void hysteresisGradient(const cv::Mat &magnitude, const cv::Mat &angle,
     quantized_angle = cv::Mat_<uchar>::zeros(angle.size());
     // Filter the raw quantized image. Only accept pixels where the magnitude is above some
     // threshold, and there is local agreement on the quantization.
+    std::vector<int> histo(N, 0);
+    int step = quantized_unfiltered.step1();
     for (int r = PATCH_HALFSIZE; r < angle.rows - PATCH_HALFSIZE; ++r)
     {
         const float *mag_ptr = magnitude.ptr<float>(r);
@@ -43,14 +45,13 @@ void hysteresisGradient(const cv::Mat &magnitude, const cv::Mat &angle,
             if (mag_ptr[c] > threshold)
             {
                 // Compute histogram of quantized bins in 3x3 patch around pixel
-                std::vector<int> histo(N, 0);
                 {
                     uchar *patch_ptr = quantized_unfiltered.ptr<uchar>(r - PATCH_HALFSIZE) + c - PATCH_HALFSIZE;
                     for (int k_r = 0; k_r < PATCH_SIZE; k_r ++) {
                         for (int k_c = 0; k_c < PATCH_SIZE; k_c ++) {
                             histo[*(patch_ptr + k_c)] ++;
                         }
-                        patch_ptr += quantized_unfiltered.step1();
+                        patch_ptr += step;
                     }
                 }
 
@@ -65,6 +66,8 @@ void hysteresisGradient(const cv::Mat &magnitude, const cv::Mat &angle,
                         max_votes = histo[i];
                     }
                 }
+
+                memset(&histo[0], 0, sizeof(int)*N);
 
                 // Only accept the quantization if majority of pixels in the patch agree
                 // 为了避免 0 的歧义，0 表示该点不是显著梯度点，0 同时也表示量化角度索引为 0

@@ -12,7 +12,6 @@
 #include "response_map.h"
 #include "feature.h"
 
-
 LinearMemoryPyramid createLinearMemoryPyramid(const cv::Mat& src, const cv::Mat& mask,
                                               const std::vector<int>& T_at_level,
                                               float threshold,
