@@ -3,9 +3,9 @@
 #include "response_map.h"
 
 #include <opencv2/core.hpp>
-
-#include <mipp.h>
-
+#ifdef USE_MIPP
+#include "mipp.h"
+#endif
 
 void similarity(const std::vector<cv::Mat>& linear_memories, 
                 const Pattern & pattern,
@@ -152,7 +152,7 @@ void similarityLocal(const std::vector<cv::Mat> &linear_memories, const Pattern 
     CV_Assert(pattern.m_features.size() < 8192);
 
     int W = img_size.width / T;
-    // ËÑË÷·¶Î§Îª [-8T, 8T], ÒòÎªÊÇ¼ä¸ôËÑË÷£¬ËùÒÔ 16 x 16
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§Îª [-8T, 8T], ï¿½ï¿½Îªï¿½Ç¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 16 x 16
     dst = cv::Mat::zeros(16, 16, CV_16U);
 
     int offset_x = (center.x / T - 8) * T;
